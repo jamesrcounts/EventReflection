@@ -57,6 +57,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DelegateDemo.cs" />
+    <Compile Include="DelegateUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

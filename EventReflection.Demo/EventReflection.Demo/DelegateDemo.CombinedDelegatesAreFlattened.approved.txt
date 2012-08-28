@@ -1,0 +1,3 @@
+[0] = Boolean AlwaysTrue()
+[1] = Boolean NeverFalse()
+[2] = Boolean AlwaysTrue()
