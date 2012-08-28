@@ -22,6 +22,16 @@
             Approvals.VerifyAll(methods, string.Empty);
         }
 
+        [TestMethod]
+        public void GetMultiInvocationList()
+        {
+            Func<bool> truth = Domain.AlwaysTrue;
+            Func<bool> truthy = Domain.NeverFalse;
+            Delegate multicast = Delegate.Combine(truth, truthy);
+            IEnumerable<MethodInfo> methods = multicast.GetInvocationList().Select(d => d.Method);
+            Approvals.VerifyAll(methods, string.Empty);
+        }
+
         public class Domain
         {
             public static bool AlwaysTrue()
