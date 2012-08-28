@@ -1,9 +1,7 @@
 ﻿namespace EventReflection.Demo
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using ApprovalTests.Reporters;
 
@@ -13,6 +11,17 @@
     [UseReporter(typeof(DiffReporter))]
     public class DelegateDemo
     {
+        [TestMethod]
+        public void CombinedDelegatesAreFlattened()
+        {
+            Func<bool> truth = Domain.AlwaysTrue;
+            Func<bool> truthy = Domain.NeverFalse;
+            Func<bool> answer43 = Domain.AlwaysTrue;
+            Delegate combined = Delegate.Combine(truthy, answer43);
+            Delegate flattened = Delegate.Combine(truth, combined);
+            DelegateUtility.VerifyInvocationList(flattened);
+        }
+
         [TestMethod]
         public void GetInvocationList()
         {
@@ -29,15 +38,6 @@
         }
 
         [TestMethod]
-        public void UnicastDelegateHasInvocationList()
-        {
-            Func<bool> truth = Domain.AlwaysTrue;
-            Assert.AreEqual(
-                truth.Method,
-                truth.GetInvocationList().Select(i => i.Method).Single());
-        }
-
-        [TestMethod]
         public void MulticastDelegateInvocationListContainsMethod()
         {
             Func<bool> truth = Domain.AlwaysTrue;
@@ -49,14 +49,12 @@
         }
 
         [TestMethod]
-        public void CombinedDelegatesAreFlattened()
+        public void UnicastDelegateHasInvocationList()
         {
             Func<bool> truth = Domain.AlwaysTrue;
-            Func<bool> truthy = Domain.NeverFalse;
-            Func<bool> answer43 = Domain.AlwaysTrue;
-            Delegate combined = Delegate.Combine(truthy, answer43);
-            Delegate flattened = Delegate.Combine(truth, combined);
-            DelegateUtility.VerifyInvocationList(flattened);
+            Assert.AreEqual(
+                truth.Method,
+                truth.GetInvocationList().Select(i => i.Method).Single());
         }
 
         public class Domain
