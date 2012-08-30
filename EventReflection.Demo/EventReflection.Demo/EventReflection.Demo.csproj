@@ -58,7 +58,10 @@
   <ItemGroup>
     <Compile Include="DelegateDemo.cs" />
     <Compile Include="DelegateUtility.cs" />
+    <Compile Include="Domain.cs" />
+    <Compile Include="Poco.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleEventDemo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

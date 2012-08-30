@@ -56,18 +56,5 @@
                 truth.Method,
                 truth.GetInvocationList().Select(i => i.Method).Single());
         }
-
-        public class Domain
-        {
-            public static bool AlwaysTrue()
-            {
-                return true;
-            }
-
-            public static bool NeverFalse()
-            {
-                return true;
-            }
-        }
     }
 }
