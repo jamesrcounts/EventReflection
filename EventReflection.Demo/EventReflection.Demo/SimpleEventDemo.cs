@@ -18,6 +18,14 @@ namespace EventReflection.Demo
         }
 
         [TestMethod]
+        public void PocoClientListensToPoco()
+        {
+            Poco poco = new Poco();
+            PocoClient client = new PocoClient(poco);
+            DelegateUtility.VerifyInvocationList(poco.GetProcessCompletedHandler());
+        }
+
+        [TestMethod]
         public void RaiseCompletedEventWhenProcessCompletes()
         {
             bool raisedEvent = false;
