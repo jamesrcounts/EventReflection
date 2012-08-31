@@ -15,6 +15,11 @@ namespace EventReflection.Demo
             return result;
         }
 
+        public EventHandler GetProcessCompletedHandler()
+        {
+            return this.ProcessCompleted;
+        }
+
         protected virtual void OnProcessCompleted(object sender, EventArgs e)
         {
             EventHandler handler = ProcessCompleted;
