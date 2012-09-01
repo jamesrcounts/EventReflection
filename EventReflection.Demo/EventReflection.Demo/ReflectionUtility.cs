@@ -1,6 +1,7 @@
 namespace EventReflection.Demo
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
@@ -8,13 +9,21 @@ namespace EventReflection.Demo
     {
         public const BindingFlags NonPublicInstance = BindingFlags.Instance | BindingFlags.NonPublic;
 
-        public static EventHandler GetProcessCompletedHandler(this Poco poco)
+        public static IEnumerable<EventCallback> GetEventHandlers(this object value)
         {
-            var matchingFields = from fieldInfo in poco.GetType().GetFields(NonPublicInstance)
-                                 where typeof(EventHandler).IsAssignableFrom(fieldInfo.FieldType)
-                                     && fieldInfo.Name == "ProcessCompleted"
-                                 select (EventHandler)fieldInfo.GetValue(poco);
-            return matchingFields.Single();
+            if (value == null)
+            {
+                return null;
+            }
+
+            return from fieldInfo in value.GetType().GetFields(NonPublicInstance)
+                   where typeof(EventHandler).IsAssignableFrom(fieldInfo.FieldType)
+                   select new EventCallback(fieldInfo.Name, fieldInfo.GetValue<EventHandler>(value));
+        }
+
+        public static T GetValue<T>(this FieldInfo fi, object value)
+        {
+            return (T)fi.GetValue(value);
         }
     }
 }

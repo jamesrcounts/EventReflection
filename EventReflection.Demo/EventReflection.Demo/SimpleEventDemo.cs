@@ -2,19 +2,22 @@
 
 namespace EventReflection.Demo
 {
-    using System;
-
     [TestClass]
     public class SimpleEventDemo
     {
         [TestMethod]
         public void GetPocoEventInvocationList()
         {
-            Poco poco = new Poco();
+            var poco = new Poco();
             poco.ProcessCompleted += Domain.HandleProcessCompleted;
 
-            EventHandler pocoDelegate = poco.GetProcessCompletedHandler();
-            DelegateUtility.VerifyInvocationList(pocoDelegate);
+            EventUtility.VerifyEventCallbacks(poco.GetEventHandlers());
+        }
+
+        [TestMethod]
+        public void NullHasNoProcessCompletedHandler()
+        {
+            Assert.IsNull(ReflectionUtility.GetEventHandlers(null));
         }
 
         [TestMethod]
@@ -22,7 +25,7 @@ namespace EventReflection.Demo
         {
             Poco poco = new Poco();
             PocoClient client = new PocoClient(poco);
-            DelegateUtility.VerifyInvocationList(poco.GetProcessCompletedHandler());
+            EventUtility.VerifyEventCallbacks(poco.GetEventHandlers());
         }
 
         [TestMethod]
