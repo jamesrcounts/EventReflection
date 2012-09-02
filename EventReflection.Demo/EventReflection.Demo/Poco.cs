@@ -6,6 +6,8 @@ namespace EventReflection.Demo
     {
         public event EventHandler ProcessCompleted;
 
+        public event EventHandler ProcessStarted;
+
         public int DoWork()
         {
             int result = 0;

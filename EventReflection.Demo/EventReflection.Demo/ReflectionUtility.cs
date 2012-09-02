@@ -18,7 +18,9 @@ namespace EventReflection.Demo
 
             return from fieldInfo in value.GetType().GetFields(NonPublicInstance)
                    where typeof(EventHandler).IsAssignableFrom(fieldInfo.FieldType)
-                   select new EventCallback(fieldInfo.Name, fieldInfo.GetValue<EventHandler>(value));
+                   let callback = fieldInfo.GetValue<EventHandler>(value)
+                   where callback != null
+                   select new EventCallback(fieldInfo.Name, callback);
         }
 
         public static T GetValue<T>(this FieldInfo fi, object value)

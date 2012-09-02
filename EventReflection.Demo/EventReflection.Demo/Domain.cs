@@ -9,14 +9,19 @@ namespace EventReflection.Demo
             return true;
         }
 
-        public static bool NeverFalse()
-        {
-            return true;
-        }
-
         public static void HandleProcessCompleted(object sender, EventArgs e)
         {
             return;
+        }
+
+        public static void HandleProcessStarted(object sender, EventArgs e)
+        {
+            return;
+        }
+
+        public static bool NeverFalse()
+        {
+            return true;
         }
     }
 }
