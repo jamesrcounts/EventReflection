@@ -10,7 +10,7 @@ namespace EventReflection.Demo
         {
             var poco = new Poco();
             poco.ProcessCompleted += Domain.HandleProcessCompleted;
-            EventUtility.VerifyEventCallbacks(poco.GetEventHandlers());
+            EventUtility.VerifyEventCallbacks(poco);
         }
 
         [TestMethod]
@@ -19,7 +19,7 @@ namespace EventReflection.Demo
             var poco = new Poco();
             poco.ProcessCompleted += Domain.HandleProcessCompleted;
             poco.ProcessCompleted += Domain.HandleProcessStarted;
-            EventUtility.VerifyEventCallbacks(poco.GetEventHandlers());
+            EventUtility.VerifyEventCallbacks(poco);
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace EventReflection.Demo
             var poco = new Poco();
             poco.ProcessCompleted += Domain.HandleProcessCompleted;
             poco.ProcessStarted += Domain.HandleProcessStarted;
-            EventUtility.VerifyEventCallbacks(poco.GetEventHandlers());
+            EventUtility.VerifyEventCallbacks(poco);
         }
 
         [TestMethod]
@@ -42,7 +42,13 @@ namespace EventReflection.Demo
         {
             Poco poco = new Poco();
             PocoClient client = new PocoClient(poco);
-            EventUtility.VerifyEventCallbacks(poco.GetEventHandlers());
+            EventUtility.VerifyEventCallbacks(poco);
+        }
+
+        [TestMethod]
+        public void NullHasNoEvents()
+        {
+            EventUtility.VerifyEventCallbacks(null);
         }
 
         [TestMethod]
