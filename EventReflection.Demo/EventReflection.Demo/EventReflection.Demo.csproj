@@ -56,6 +56,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ComplexEventDemo.cs" />
     <Compile Include="DelegateDemo.cs" />
     <Compile Include="DelegateUtility.cs" />
     <Compile Include="Domain.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="EventUtility.cs" />
     <Compile Include="Poco.cs" />
     <Compile Include="PocoClient.cs" />
+    <Compile Include="PocoExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionUtility.cs" />
     <Compile Include="SimpleEventDemo.cs" />

@@ -1,6 +1,7 @@
 namespace EventReflection.Demo
 {
     using System;
+    using System.ComponentModel;
 
     public class Domain
     {
@@ -15,6 +16,11 @@ namespace EventReflection.Demo
         }
 
         public static void HandleProcessStarted(object sender, EventArgs e)
+        {
+            return;
+        }
+
+        public static void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             return;
         }
