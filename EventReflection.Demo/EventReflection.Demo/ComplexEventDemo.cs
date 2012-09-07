@@ -1,7 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace EventReflection.Demo
+﻿namespace EventReflection.Demo
 {
+    using System.Linq;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class ComplexEventDemo
     {
@@ -12,6 +14,12 @@ namespace EventReflection.Demo
             target.ProcessStarted += Domain.HandleProcessStarted;
             target.PropertyChanged += Domain.HandlePropertyChanged;
             EventUtility.VerifyEventCallbacks(target);
+        }
+
+        [TestMethod]
+        public void NullHasNoEventCallbacks()
+        {
+            Assert.IsFalse(ReflectionUtility.GetEventCallbacks(null).Any());
         }
     }
 }

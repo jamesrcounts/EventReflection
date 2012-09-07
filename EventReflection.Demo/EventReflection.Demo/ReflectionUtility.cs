@@ -22,10 +22,15 @@ namespace EventReflection.Demo
             }
         }
 
+        public static Type GetType(object value)
+        {
+            return value == null ? typeof(void) : value.GetType();
+        }
+
         public static IEnumerable<EventCallback> GetEventCallbacks(
             this object value)
         {
-            var types = value.GetType().GetEvents()
+            var types = GetType(value).GetEvents()
                 .Select(ei => ei.EventHandlerType).Distinct();
             return value.GetEventsForTypes(types.ToArray());
         }
@@ -39,12 +44,7 @@ namespace EventReflection.Demo
             this object value,
             params Type[] types)
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return from fieldInfo in value.GetType().EnumerateFieldsWithInherited(NonPublicInstance)
+            return from fieldInfo in GetType(value).EnumerateFieldsWithInherited(NonPublicInstance)
                    where types.Any(t => t == fieldInfo.FieldType)
                    let callback = fieldInfo.GetValue<Delegate>(value)
                    where callback != null

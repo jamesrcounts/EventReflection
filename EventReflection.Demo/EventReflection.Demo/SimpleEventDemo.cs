@@ -2,6 +2,8 @@
 
 namespace EventReflection.Demo
 {
+    using System.Linq;
+
     [TestClass]
     public class SimpleEventDemo
     {
@@ -34,7 +36,7 @@ namespace EventReflection.Demo
         [TestMethod]
         public void NullHasNoProcessCompletedHandler()
         {
-            Assert.IsNull(ReflectionUtility.GetEventHandlers(null));
+            Assert.IsFalse(ReflectionUtility.GetEventHandlers(null).Any());
         }
 
         [TestMethod]
