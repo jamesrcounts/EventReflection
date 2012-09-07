@@ -22,7 +22,22 @@ namespace EventReflection.Demo
             }
         }
 
+        public static IEnumerable<EventCallback> GetEventCallbacks(
+            this object value)
+        {
+            var types = value.GetType().GetEvents()
+                .Select(ei => ei.EventHandlerType).Distinct();
+            return value.GetEventsForTypes(types.ToArray());
+        }
+
         public static IEnumerable<EventCallback> GetEventHandlers(this object value)
+        {
+            return value.GetEventsForTypes(typeof(EventHandler));
+        }
+
+        public static IEnumerable<EventCallback> GetEventsForTypes(
+            this object value,
+            params Type[] types)
         {
             if (value == null)
             {
@@ -30,8 +45,8 @@ namespace EventReflection.Demo
             }
 
             return from fieldInfo in value.GetType().EnumerateFieldsWithInherited(NonPublicInstance)
-                   where typeof(EventHandler).IsAssignableFrom(fieldInfo.FieldType)
-                   let callback = fieldInfo.GetValue<EventHandler>(value)
+                   where types.Any(t => t == fieldInfo.FieldType)
+                   let callback = fieldInfo.GetValue<Delegate>(value)
                    where callback != null
                    select new EventCallback(fieldInfo.Name, callback);
         }

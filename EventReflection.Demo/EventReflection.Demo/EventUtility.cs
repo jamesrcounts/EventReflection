@@ -16,7 +16,7 @@ namespace EventReflection.Demo
                 buffer = new StringBuilder();
 
                 buffer.AppendLine("Event callbacks for {0}".FormatWith(value.GetType().Name)).AppendLine();
-                foreach (var callback in value.GetEventHandlers())
+                foreach (var callback in value.GetEventCallbacks())
                 {
                     buffer.AppendLine(callback.ToString());
                 }

@@ -1,0 +1,8 @@
+Event callbacks for PocoExtension
+
+PropertyChanged
+	[0] Void HandlePropertyChanged(System.Object, System.ComponentModel.PropertyChangedEventArgs)
+
+ProcessStarted
+	[0] Void HandleProcessStarted(System.Object, System.EventArgs)
+
