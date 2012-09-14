@@ -30,9 +30,12 @@ namespace EventReflection.Demo
         public static IEnumerable<EventCallback> GetEventCallbacks(
             this object value)
         {
-            var types = GetType(value).GetEvents()
-                .Select(ei => ei.EventHandlerType).Distinct();
-            return value.GetEventsForTypes(types.ToArray());
+            return value.GetEventsForTypes(GetEventTypes(value).ToArray());
+        }
+
+        public static IEnumerable<Type> GetEventTypes(object value)
+        {
+            return GetType(value).GetEvents().Select(ei => ei.EventHandlerType).Distinct();
         }
 
         public static IEnumerable<EventCallback> GetEventHandlers(this object value)
