@@ -1,0 +1,14 @@
+ListEntryWrapper
+{
+	Handler: System.EventHandler
+	Key: System.Object
+	Next: EventReflection.Demo.ListEntryWrapper
+}
+
+ListEntryWrapper
+{
+	Handler: System.EventHandler
+	Key: System.Object
+	Next: NULL
+}
+

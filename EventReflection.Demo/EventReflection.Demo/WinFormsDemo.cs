@@ -1,17 +1,24 @@
 ﻿namespace EventReflection.Demo
 {
     using System;
+    using System.Linq;
     using System.Windows.Forms;
-
     using ApprovalTests.WinForms;
-
     using ApprovalUtilities.Utilities;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class WinFormsDemo
     {
+        [TestMethod]
+        public void AsEnumerableMethodAdaptsEventHandlerList()
+        {
+            var button = GetTestButton();
+            ApprovalTests.Approvals.VerifyAll(
+                button.GetEventHandlerList().AsEnumerable(),
+                e => e.WritePropertiesToString());
+        }
+
         [TestMethod]
         public void ButtonHasNoHead()
         {
@@ -40,16 +47,6 @@
         }
 
         [TestMethod]
-        public void ListHasMoreThanOneEntry()
-        {
-            var button = new Button();
-            button.Click += (s, e) => { return; };
-            button.LostFocus += (s, e) => { return; };
-            var wrapper = new ListEntryWrapper(button.GetEventHandlerList().GetHead());
-            ApprovalTests.Approvals.Verify(wrapper.WritePropertiesToString());
-        }
-
-        [TestMethod]
         public void GetEventTypeForDemoForm()
         {
             ApprovalTests.Approvals.VerifyAll(
@@ -64,6 +61,14 @@
         }
 
         [TestMethod]
+        public void ListHasMoreThanOneEntry()
+        {
+            var button = GetTestButton();
+            var wrapper = new ListEntryWrapper(button.GetEventHandlerList().GetHead());
+            ApprovalTests.Approvals.Verify(wrapper.WritePropertiesToString());
+        }
+
+        [TestMethod]
         public void NullHasNoEventHandlerList()
         {
             Assert.IsNull(ReflectionUtility.GetEventHandlerList(null));
@@ -73,6 +78,13 @@
         public void NullHasNoHead()
         {
             Assert.IsNull(ReflectionUtility.GetHead(null));
+        }
+
+        [TestMethod]
+        public void NullListIsEmpty()
+        {
+            var button = new Button();
+            Assert.IsFalse(button.GetEventHandlerList().AsEnumerable().Any());
         }
 
         [TestMethod]
@@ -111,6 +123,14 @@
         {
             var listEntryWrapper = new ListEntryWrapper(new object());
             ApprovalTests.Approvals.Verify(listEntryWrapper.WritePropertiesToString());
+        }
+
+        private static Button GetTestButton()
+        {
+            var button = new Button();
+            button.Click += (s, e) => { return; };
+            button.LostFocus += (s, e) => { return; };
+            return button;
         }
 
         private object GetListEntry()

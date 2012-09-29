@@ -10,6 +10,20 @@ namespace EventReflection.Demo
     {
         public const BindingFlags NonPublicInstance = BindingFlags.Instance | BindingFlags.NonPublic;
 
+        public static IEnumerable<ListEntryWrapper> AsEnumerable(this EventHandlerList source)
+        {
+            object value = source.GetHead();
+            if (value == null)
+            {
+                yield break;
+            }
+
+            for (var head = new ListEntryWrapper(value); head != null; head = head.Next)
+            {
+                yield return head;
+            }
+        }
+
         public static IEnumerable<FieldInfo> EnumerateFieldsWithInherited(
             this Type typeInfo,
             BindingFlags bindingFlags)
