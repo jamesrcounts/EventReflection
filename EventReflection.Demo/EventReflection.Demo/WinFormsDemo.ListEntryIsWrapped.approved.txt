@@ -1,0 +1,6 @@
+ListEntryWrapper
+{
+	Handler: System.EventHandler
+	Key: System.Object
+	Next: NULL
+}

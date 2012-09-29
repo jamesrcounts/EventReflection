@@ -67,12 +67,14 @@
     <Compile Include="Domain.cs" />
     <Compile Include="EventCallback.cs" />
     <Compile Include="EventUtility.cs" />
+    <Compile Include="ListEntryWrapper.cs" />
     <Compile Include="Poco.cs" />
     <Compile Include="PocoClient.cs" />
     <Compile Include="PocoExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionUtility.cs" />
     <Compile Include="SimpleEventDemo.cs" />
+    <Compile Include="Spoiler.cs" />
     <Compile Include="WinFormsDemo.cs" />
   </ItemGroup>
   <ItemGroup>

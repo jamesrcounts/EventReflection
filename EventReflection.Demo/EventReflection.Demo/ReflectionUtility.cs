@@ -2,6 +2,7 @@ namespace EventReflection.Demo
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -22,20 +23,21 @@ namespace EventReflection.Demo
             }
         }
 
-        public static Type GetType(object value)
-        {
-            return value == null ? typeof(void) : value.GetType();
-        }
-
         public static IEnumerable<EventCallback> GetEventCallbacks(
             this object value)
         {
             return value.GetEventsForTypes(GetEventTypes(value).ToArray());
         }
 
-        public static IEnumerable<Type> GetEventTypes(object value)
+        public static EventHandlerList GetEventHandlerList(this object value)
         {
-            return GetType(value).GetEvents().Select(ei => ei.EventHandlerType).Distinct();
+            var lists = from fieldInfo in GetType(value).EnumerateFieldsWithInherited(NonPublicInstance)
+                        where
+                            fieldInfo.Name == "events" &&
+                            typeof(EventHandlerList).IsAssignableFrom(fieldInfo.FieldType)
+                        select fieldInfo.GetValue<EventHandlerList>(value);
+
+            return lists.SingleOrDefault();
         }
 
         public static IEnumerable<EventCallback> GetEventHandlers(this object value)
@@ -52,6 +54,22 @@ namespace EventReflection.Demo
                    let callback = fieldInfo.GetValue<Delegate>(value)
                    where callback != null
                    select new EventCallback(fieldInfo.Name, callback);
+        }
+
+        public static IEnumerable<Type> GetEventTypes(object value)
+        {
+            return GetType(value).GetEvents().Select(ei => ei.EventHandlerType).Distinct();
+        }
+
+        public static object GetHead(this EventHandlerList value)
+        {
+            var headInfo = GetType(value).GetField("head", NonPublicInstance);
+            return headInfo == null ? null : headInfo.GetValue(value);
+        }
+
+        public static Type GetType(object value)
+        {
+            return value == null ? typeof(void) : value.GetType();
         }
 
         public static T GetValue<T>(this FieldInfo fi, object value)

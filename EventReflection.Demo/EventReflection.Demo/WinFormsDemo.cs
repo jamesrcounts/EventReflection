@@ -1,8 +1,11 @@
 ﻿namespace EventReflection.Demo
 {
     using System;
+    using System.Windows.Forms;
 
     using ApprovalTests.WinForms;
+
+    using ApprovalUtilities.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,16 +13,22 @@
     public class WinFormsDemo
     {
         [TestMethod]
-        public void VerifyDemoFormView()
+        public void ButtonHasNoHead()
         {
-            WinFormsApprovals.Verify(new DemoForm());
+            Assert.IsNull(new Button().GetEventHandlerList().GetHead());
         }
 
         [TestMethod]
-        public void GetEventTypeForDemoForm()
+        public void DemoFormEventHandlerListHasHead()
         {
-            ApprovalTests.Approvals.VerifyAll(
-                ReflectionUtility.GetEventTypes(new DemoForm()), string.Empty);
+            var eventHandlerList = new DemoForm().GetEventHandlerList();
+            Assert.AreEqual("ListEntry", eventHandlerList.GetHead().GetType().Name);
+        }
+
+        [TestMethod]
+        public void GetEventHandlerList()
+        {
+            Assert.IsNotNull(new DemoForm().GetEventHandlerList());
         }
 
         [TestMethod]
@@ -31,9 +40,82 @@
         }
 
         [TestMethod]
+        public void ListHasMoreThanOneEntry()
+        {
+            var button = new Button();
+            button.Click += (s, e) => { return; };
+            button.LostFocus += (s, e) => { return; };
+            var wrapper = new ListEntryWrapper(button.GetEventHandlerList().GetHead());
+            ApprovalTests.Approvals.Verify(wrapper.WritePropertiesToString());
+        }
+
+        [TestMethod]
+        public void GetEventTypeForDemoForm()
+        {
+            ApprovalTests.Approvals.VerifyAll(
+                ReflectionUtility.GetEventTypes(new DemoForm()), string.Empty);
+        }
+
+        [TestMethod]
+        public void ListEntryIsWrapped()
+        {
+            var listEntryWrapper = new ListEntryWrapper(GetListEntry());
+            ApprovalTests.Approvals.Verify(listEntryWrapper.WritePropertiesToString());
+        }
+
+        [TestMethod]
+        public void NullHasNoEventHandlerList()
+        {
+            Assert.IsNull(ReflectionUtility.GetEventHandlerList(null));
+        }
+
+        [TestMethod]
+        public void NullHasNoHead()
+        {
+            Assert.IsNull(ReflectionUtility.GetHead(null));
+        }
+
+        [TestMethod]
+        public void PocoHasNoEventHandlerList()
+        {
+            Assert.IsNull(new Poco().GetEventHandlerList());
+        }
+
+        [TestMethod]
+        public void RetrieveListEntryWithReflection()
+        {
+            var head = new DemoForm().GetEventHandlerList().GetHead();
+            ApprovalTests.Approvals.Verify(head.GetType().FullName);
+        }
+
+        [TestMethod]
+        public void SpoilerHasNoEventHandlerList()
+        {
+            Assert.IsNull(new Spoiler().GetEventHandlerList());
+        }
+
+        [TestMethod]
         public void VerifyDemoFormEvents()
         {
             EventUtility.VerifyEventCallbacks(new DemoForm());
+        }
+
+        [TestMethod]
+        public void VerifyDemoFormView()
+        {
+            WinFormsApprovals.Verify(new DemoForm());
+        }
+
+        [TestMethod]
+        public void WrongObjectIsntWrapped()
+        {
+            var listEntryWrapper = new ListEntryWrapper(new object());
+            ApprovalTests.Approvals.Verify(listEntryWrapper.WritePropertiesToString());
+        }
+
+        private object GetListEntry()
+        {
+            return new DemoForm().GetEventHandlerList().GetHead();
         }
     }
 }

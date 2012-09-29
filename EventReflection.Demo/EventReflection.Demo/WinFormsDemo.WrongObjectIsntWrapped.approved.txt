@@ -1,0 +1,6 @@
+ListEntryWrapper
+{
+	Handler: NULL
+	Key: NULL
+	Next: NULL
+}
